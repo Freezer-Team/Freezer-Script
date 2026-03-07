@@ -1,7 +1,7 @@
 # Freezer 开发接口
 
 ## 脚本位置
-脚本应该存放在 `data/system/Freezer/plugins` 文件夹中.
+脚本应该存放在 `data/system/Freezer/scripts` 文件夹中.
 
 ## 外部依赖库
 Freezer本体已导入以下第三方依赖库:
@@ -89,7 +89,7 @@ XposedHelpers.findAndHookMethod("com.android.server.am.ActiveServices", targetCl
 你可以通过 `./gradlew build` 命令来构建你编写的脚本
 然后，你应该能够在项目根目录下的 `\app\build\outputs\apk\release` 文件夹中找到编译后的脚本
 
-你可以看到编译后的文件是一个apk文件。接下来，你需要解压缩它以提取 `classs.dex` 文件并将其打包为jar文件
+你可以看到编译后的文件是一个apk文件。接下来，你需要解压缩它以提取 `classes.dex` 文件并将其打包为jar文件
 
 然后，你只需将jar文件放入Freezer插件文件夹中即可。
 
