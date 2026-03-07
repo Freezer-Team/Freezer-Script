@@ -12,6 +12,7 @@ lsparanoid {
     variantFilter = { true }
 }
 
+configure<ApplicationExtension> {
     namespace = "nep.timeline.freezer.script"
     compileSdk = 36
 
