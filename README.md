@@ -1,5 +1,8 @@
 # Freezer 开发接口
 
+### 待更新中
+Freezer 已更新为 API 101, 文档内容待更新
+
 ## 脚本位置
 脚本应该存放在 `data/system/Freezer/scripts` 文件夹中.
 
