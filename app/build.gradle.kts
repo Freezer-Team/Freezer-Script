@@ -64,12 +64,12 @@ configure<ApplicationExtension> {
 
 dependencies {
     compileOnly(fileTree("libs") { include("*.aar") })
-    compileOnly("commons-io:commons-io:2.21.0")
-    compileOnly("dev.rikka.rikkax.parcelablelist:parcelablelist:2.0.1")
-    compileOnly("org.lsposed.hiddenapibypass:hiddenapibypass:6.1")
-    compileOnly("com.google.code.gson:gson:2.13.2")
+    implementation("commons-io:commons-io:2.21.0")
+    implementation("dev.rikka.rikkax.parcelablelist:parcelablelist:2.0.1")
+    implementation("org.lsposed.hiddenapibypass:hiddenapibypass:6.1")
+    implementation("com.google.code.gson:gson:2.13.2")
     val libsuVersion = "6.0.0"
-    compileOnly("com.github.topjohnwu.libsu:core:$libsuVersion")
-    compileOnly("com.github.topjohnwu.libsu:service:$libsuVersion")
-    compileOnly("com.github.topjohnwu.libsu:io:$libsuVersion")
+    implementation("com.github.topjohnwu.libsu:core:$libsuVersion")
+    implementation("com.github.topjohnwu.libsu:service:$libsuVersion")
+    implementation("com.github.topjohnwu.libsu:io:$libsuVersion")
 }

@@ -1,23 +1,7 @@
 # Freezer 开发接口
 
-### 待更新中
-Freezer 已更新为 API 101, 文档内容待更新
-
 ## 脚本位置
 脚本应该存放在 `data/system/Freezer/scripts` 文件夹中.
-
-## 外部依赖库
-Freezer本体已导入以下第三方依赖库:
-```
-com.google.code.gson
-commons-io
-dev.rikka.rikkax.parcelablelist
-org.lsposed.hiddenapibypass
-com.github.topjohnwu.libsu:core
-com.github.topjohnwu.libsu:service
-com.github.topjohnwu.libsu:io
-```
-如果你的脚本使用了上述第三方依赖库中的其中一个 请确保不要将依赖库打包至脚本中 使用 `compileOnly` 即可.
 
 ## 开始
 当前 Freezer 开发接口 提供了7个来自Freezer本体的反射类
@@ -49,9 +33,10 @@ __这个类的位置不可以被变更！__
 
 接下来 让我们看看init方法体
 ```
-public static void init(ClassLoader targetClassLoader, ClassLoader freezerClassLoader) {
+public static void init(ClassLoader targetClassLoader, ClassLoader freezerClassLoader, @Nullable XposedModule module) {
     GlobalData.targetClassLoader = targetClassLoader;
     GlobalData.freezerClassLoader = freezerClassLoader;
+    CakeHooker.setXposedModule(module);
     ReflectionInit.init(freezerClassLoader);
 }
 ```
@@ -64,7 +49,7 @@ CachedAppOptimizer类的位置在: `com/android/server/am/CachedAppOptimizer`
 
 代码 (Java):
 ```Java
-XposedHelpers.findAndHookMethod("com.android.server.am.CachedAppOptimizer", targetClassLoader, "useFreezer", XC_MethodReplacement.returnConstant(false));
+CakeReflection.findAndHookMethod("com.android.server.am.CachedAppOptimizer", targetClassLoader, "useFreezer", (CakeHooker.ReplacementCallback) replacementHookCallback -> false);
 ```
 
 好的，接下来我需要检测服务执行时解冻应用程序
@@ -72,14 +57,14 @@ XposedHelpers.findAndHookMethod("com.android.server.am.CachedAppOptimizer", targ
 
 代码 (Java):
 ```Java
-XposedHelpers.findAndHookMethod("com.android.server.am.ActiveServices", targetClassLoader, "bumpServiceExecutingLocked", "com.android.server.am.ServiceRecord", boolean.class, String.class, int.class, boolean.class, new XC_MethodHook() {
+CakeReflection.findAndHookMethod("com.android.server.am.ActiveServices", targetClassLoader, "bumpServiceExecutingLocked", "com.android.server.am.ServiceRecord", boolean.class, String.class, int.class, boolean.class, new CakeHooker.Callback() {
     @Override
-    protected void beforeHookedMethod(MethodHookParam param) {
-        Object service = param.args[0];
+    public void call(CakeHooker.BeforeHookCallback callback) {
+        Object service = callback.getArgs()[0];
         if (service == null)
             return;
 
-        ProcessRecord processRecord = ProcessList.getProcessRecord(XposedHelpers.getObjectField(service, "app"));
+        ProcessRecord processRecord = ProcessList.getProcessRecord(CakeReflection.getObjectField(service, "app"));
         if (processRecord == null)
             return;
 

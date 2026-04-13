@@ -3,19 +3,6 @@
 ## Plugin location
 Plugin should stored in `data/system/Freezer/plugins` folder.
 
-## External dependency library
-Third party libraries referenced by Freezer:
-```
-com.google.code.gson
-commons-io
-dev.rikka.rikkax.parcelablelist
-org.lsposed.hiddenapibypass
-com.github.topjohnwu.libsu:core
-com.github.topjohnwu.libsu:service
-com.github.topjohnwu.libsu:io
-```
-If the script you write requires the use of these third-party dependency libraries, please do not package them into your plugin and use `compileOnly` instead.
-
 ## Start
 Currently, the Open Freezer SDK provides 7 reflection classes from Freezer
 They are respectively:
@@ -46,9 +33,10 @@ __The position of this class cannot be changed!__
 
 Let's take a look at the init method
 ```
-public static void init(ClassLoader targetClassLoader, ClassLoader freezerClassLoader) {
+public static void init(ClassLoader targetClassLoader, ClassLoader freezerClassLoader, @Nullable XposedModule module) {
     GlobalData.targetClassLoader = targetClassLoader;
     GlobalData.freezerClassLoader = freezerClassLoader;
+    CakeHooker.setXposedModule(module);
     ReflectionInit.init(freezerClassLoader);
 }
 ```
@@ -61,7 +49,7 @@ Then there is a `useFreezer` method in this class, just hook it and let it retur
 
 Code (Java):
 ```Java
-XposedHelpers.findAndHookMethod("com.android.server.am.CachedAppOptimizer", targetClassLoader, "useFreezer", XC_MethodReplacement.returnConstant(false));
+CakeReflection.findAndHookMethod("com.android.server.am.CachedAppOptimizer", targetClassLoader, "useFreezer", (CakeHooker.ReplacementCallback) replacementHookCallback -> false);
 ```
 
 Okay, next I need to unfreeze the application bump service executing
@@ -69,14 +57,14 @@ To implement it, simply hook the `bumpServiceExecutingLocked` method in `com/and
 
 Code (Java):
 ```Java
-XposedHelpers.findAndHookMethod("com.android.server.am.ActiveServices", targetClassLoader, "bumpServiceExecutingLocked", "com.android.server.am.ServiceRecord", boolean.class, String.class, int.class, boolean.class, new XC_MethodHook() {
+CakeReflection.findAndHookMethod("com.android.server.am.ActiveServices", targetClassLoader, "bumpServiceExecutingLocked", "com.android.server.am.ServiceRecord", boolean.class, String.class, int.class, boolean.class, new CakeHooker.Callback() {
     @Override
-    protected void beforeHookedMethod(MethodHookParam param) {
-        Object service = param.args[0];
+    public void call(CakeHooker.BeforeHookCallback callback) {
+        Object service = callback.getArgs()[0];
         if (service == null)
             return;
 
-        ProcessRecord processRecord = ProcessList.getProcessRecord(XposedHelpers.getObjectField(service, "app"));
+        ProcessRecord processRecord = ProcessList.getProcessRecord(CakeReflection.getObjectField(service, "app"));
         if (processRecord == null)
             return;
 
