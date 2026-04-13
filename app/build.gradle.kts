@@ -40,8 +40,8 @@ configure<ApplicationExtension> {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_25
-        targetCompatibility = JavaVersion.VERSION_25
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     lint {
@@ -63,8 +63,7 @@ configure<ApplicationExtension> {
 }
 
 dependencies {
-    compileOnly("de.robv.android.xposed:api:82:sources")
-    compileOnly("de.robv.android.xposed:api:82")
+    compileOnly(fileTree("libs") { include("*.aar") })
     compileOnly("commons-io:commons-io:2.21.0")
     compileOnly("dev.rikka.rikkax.parcelablelist:parcelablelist:2.0.1")
     compileOnly("org.lsposed.hiddenapibypass:hiddenapibypass:6.1")

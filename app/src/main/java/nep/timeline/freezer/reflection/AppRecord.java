@@ -2,7 +2,7 @@ package nep.timeline.freezer.reflection;
 
 import android.content.pm.ApplicationInfo;
 
-import de.robv.android.xposed.XposedHelpers;
+import nep.timeline.cakereflection.CakeReflection;
 
 public class AppRecord {
     private final Object instance;
@@ -11,8 +11,8 @@ public class AppRecord {
 
     public AppRecord(Object instance) {
         this.instance = instance;
-        this.packageName = (String) XposedHelpers.callMethod(instance, "getPackageName");
-        this.userId = (int) XposedHelpers.callMethod(instance, "getUserId");
+        this.packageName = (String) CakeReflection.callMethod(instance, "getPackageName");
+        this.userId = (int) CakeReflection.callMethod(instance, "getUserId");
     }
 
     public String getPackageName() {
@@ -24,10 +24,10 @@ public class AppRecord {
     }
 
     public int getUid() {
-        return (int) XposedHelpers.callMethod(instance, "getUid");
+        return (int) CakeReflection.callMethod(instance, "getUid");
     }
 
     public ApplicationInfo getApplicationInfo() {
-        return (ApplicationInfo) XposedHelpers.callMethod(instance, "getApplicationInfo");
+        return (ApplicationInfo) CakeReflection.callMethod(instance, "getApplicationInfo");
     }
 }

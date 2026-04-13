@@ -2,7 +2,7 @@ package nep.timeline.freezer.reflection;
 
 import android.content.pm.ApplicationInfo;
 
-import de.robv.android.xposed.XposedHelpers;
+import nep.timeline.cakereflection.CakeReflection;
 
 public class ProcessRecord {
     private final Object instance;
@@ -16,13 +16,13 @@ public class ProcessRecord {
 
     public ProcessRecord(Object instance) {
         this.instance = instance;
-        this.applicationInfo = (ApplicationInfo) XposedHelpers.callMethod(instance, "getApplicationInfo");
-        this.packageName = (String) XposedHelpers.callMethod(instance, "getPackageName");
-        this.processName = (String) XposedHelpers.callMethod(instance, "getProcessName");
-        this.processNameWithIsolated = (String) XposedHelpers.callMethod(instance, "getProcessNameWithIsolated");
-        this.userId = (int) XposedHelpers.callMethod(instance, "getUserId");
-        this.uid = (int) XposedHelpers.callMethod(instance, "getUid");
-        this.runningUid = (int) XposedHelpers.callMethod(instance, "getRunningUid");
+        this.applicationInfo = (ApplicationInfo) CakeReflection.callMethod(instance, "getApplicationInfo");
+        this.packageName = (String) CakeReflection.callMethod(instance, "getPackageName");
+        this.processName = (String) CakeReflection.callMethod(instance, "getProcessName");
+        this.processNameWithIsolated = (String) CakeReflection.callMethod(instance, "getProcessNameWithIsolated");
+        this.userId = (int) CakeReflection.callMethod(instance, "getUserId");
+        this.uid = (int) CakeReflection.callMethod(instance, "getUid");
+        this.runningUid = (int) CakeReflection.callMethod(instance, "getRunningUid");
     }
 
     public String getPackageName() {
@@ -53,7 +53,7 @@ public class ProcessRecord {
     }
 
     public AppRecord getAppRecord() {
-        Object appRecord = XposedHelpers.callMethod(instance, "getAppRecord");
+        Object appRecord = CakeReflection.callMethod(instance, "getAppRecord");
         if (appRecord == null)
             return null;
         return new AppRecord(appRecord);

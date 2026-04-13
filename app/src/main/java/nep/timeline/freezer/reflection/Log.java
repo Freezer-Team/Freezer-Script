@@ -1,35 +1,35 @@
 package nep.timeline.freezer.reflection;
 
-import de.robv.android.xposed.XposedHelpers;
+import nep.timeline.cakereflection.CakeReflection;
 
 public class Log {
     public static Class<?> clazz;
 
     public static void d(String msg) {
-        XposedHelpers.callStaticMethod(clazz, "d", msg);
+        CakeReflection.callStaticMethod(clazz, "d", msg);
     }
 
     public static void d(String msg, Throwable throwable) {
-        XposedHelpers.callStaticMethod(clazz, "d", msg, throwable);
+        CakeReflection.callStaticMethod(clazz, "d", msg, throwable);
     }
 
     public static void i(String msg) {
-        XposedHelpers.callStaticMethod(clazz, "i", msg);
+        CakeReflection.callStaticMethod(clazz, "i", msg);
     }
 
     public static void w(String msg) {
-        XposedHelpers.callStaticMethod(clazz, "w", msg);
+        CakeReflection.callStaticMethod(clazz, "w", msg);
     }
 
     public static void w(String msg, Throwable throwable) {
-        XposedHelpers.callStaticMethod(clazz, "w", msg, throwable);
+        CakeReflection.callStaticMethod(clazz, "w", msg, throwable);
     }
 
     public static void e(String msg) {
-        XposedHelpers.callStaticMethod(clazz, "e", msg);
+        CakeReflection.callStaticMethod(clazz, "e", msg);
     }
 
     public static void e(String msg, Throwable throwable) {
-        XposedHelpers.callStaticMethod(clazz, "e", msg, throwable);
+        CakeReflection.callStaticMethod(clazz, "e", msg, throwable);
     }
 }
