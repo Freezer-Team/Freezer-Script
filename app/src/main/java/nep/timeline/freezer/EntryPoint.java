@@ -4,7 +4,6 @@ import org.jetbrains.annotations.Nullable;
 
 import io.github.libxposed.api.XposedModule;
 import nep.timeline.cakereflection.CakeHooker;
-import nep.timeline.freezer.reflection.ReflectionInit;
 import nep.timeline.freezer.script.BuildConfig;
 
 public class EntryPoint {
@@ -19,7 +18,6 @@ public class EntryPoint {
         GlobalData.targetClassLoader = targetClassLoader; // 系统框架 ClassLoader
         GlobalData.freezerClassLoader = freezerClassLoader; // Freezer 内部 ClassLoader
         CakeHooker.setXposedModule(module);
-        ReflectionInit.init(freezerClassLoader);
 
         // 执行你的代码
     }

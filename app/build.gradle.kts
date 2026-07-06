@@ -28,6 +28,7 @@ configure<ApplicationExtension> {
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -63,13 +64,6 @@ configure<ApplicationExtension> {
 }
 
 dependencies {
-    compileOnly(fileTree("libs") { include("*.aar") })
-    implementation("commons-io:commons-io:2.21.0")
-    implementation("dev.rikka.rikkax.parcelablelist:parcelablelist:2.0.1")
-    implementation("org.lsposed.hiddenapibypass:hiddenapibypass:6.1")
-    implementation("com.google.code.gson:gson:2.13.2")
-    val libsuVersion = "6.0.0"
-    implementation("com.github.topjohnwu.libsu:core:$libsuVersion")
-    implementation("com.github.topjohnwu.libsu:service:$libsuVersion")
-    implementation("com.github.topjohnwu.libsu:io:$libsuVersion")
+    compileOnly(fileTree("libs/comp") { include("*.aar") })
+    implementation(fileTree("libs/imp") { include("*.aar") })
 }

@@ -20,4 +20,3 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keep class nep.timeline.freezer.EntryPoint {*;}
--keep class nep.timeline.cakereflection.CakeHooker$Hooker {*;}
